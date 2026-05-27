@@ -1,0 +1,10 @@
+*.md
+CLAUDE.md
+README.md
+scripts/
+.gitignore
+.vercelignore
+.DS_Store
+node_modules/
+.env
+.env.*
