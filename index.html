@@ -50,21 +50,15 @@ html{scroll-behavior:smooth}
 ::selection{background:var(--gold);color:var(--bg)}
 a{color:inherit;text-decoration:none}
 
-/* ====== Soft aurora background (no decorative SVG behind content) ====== */
+/* ====== Market background ====== */
 .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.aurora::before{
-  content:"";position:absolute;
-  top:-200px;left:50%;transform:translateX(-50%);
-  width:1100px;height:700px;
-  background:radial-gradient(ellipse at center, rgba(212,168,87,.13), transparent 60%);
-  filter:blur(40px);
-}
-.aurora::after{
-  content:"";position:absolute;
-  bottom:-200px;right:-100px;
-  width:600px;height:600px;
-  background:radial-gradient(ellipse at center, rgba(106,161,120,.06), transparent 60%);
-  filter:blur(50px);
+#marketBg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.market-overlay{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212,168,87,.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(106,161,120,.04) 0%, transparent 40%),
+    linear-gradient(180deg, rgba(10,10,12,.3) 0%, rgba(10,10,12,.85) 100%);
 }
 
 /* ====== Top bar ====== */
@@ -458,7 +452,8 @@ a{color:inherit;text-decoration:none}
 </head>
 <body>
 
-<div class="aurora"></div>
+<canvas id="marketBg"></canvas>
+<div class="market-overlay"></div>
 
 <header class="topbar">
   <div class="topbar-row">
@@ -1075,6 +1070,224 @@ buildTape();
 
 if (HUB.ca) refreshHub().then(buildTape);
 if (COINS.some(c => c.ca)) refreshPrices();
+
+/* ============================================================
+   MARKET BACKGROUND CANVAS
+   ============================================================ */
+(function(){
+  const cvs = document.getElementById("marketBg");
+  const ctx = cvs.getContext("2d");
+  let W, H, dpr;
+
+  function resize(){
+    dpr = window.devicePixelRatio || 1;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    cvs.width = W * dpr;
+    cvs.height = H * dpr;
+    cvs.style.width = W + "px";
+    cvs.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  /* Grid */
+  const GRID = 80;
+
+  /* Floating numbers */
+  const NUMS = [];
+  const SYMBOLS = ["BTC","ETH","SOL","BNB","XRP","ADA","DOGE","LINK","DOT","AVAX","UNI","ATOM","NEAR","LTC","SHIB","PEPE"];
+  const PRICES = ["42,180","3,284","178.5","612","0.84","0.72","0.167","18.4","8.92","41.2","12.8","11.4","7.62","94.3","0.0000284","0.0000198"];
+
+  function makeNum(){
+    const isPrice = Math.random() > 0.4;
+    const idx = Math.floor(Math.random() * SYMBOLS.length);
+    let text;
+    if (isPrice) {
+      text = "$" + PRICES[idx];
+    } else if (Math.random() > 0.5) {
+      text = SYMBOLS[idx];
+    } else {
+      const pct = (Math.random() * 30 - 10).toFixed(2);
+      text = (pct >= 0 ? "+" : "") + pct + "%";
+    }
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: -0.1 - Math.random() * 0.2,
+      alpha: 0.03 + Math.random() * 0.06,
+      size: 10 + Math.random() * 4,
+      text: text,
+      life: 0,
+      maxLife: 600 + Math.random() * 800
+    };
+  }
+  for (let i = 0; i < 45; i++) {
+    const n = makeNum();
+    n.life = Math.random() * n.maxLife;
+    NUMS.push(n);
+  }
+
+  /* Chart line (subtle rising trend) */
+  const CHART_POINTS = [];
+  const CP_COUNT = 40;
+  for (let i = 0; i <= CP_COUNT; i++){
+    const x = (i / CP_COUNT);
+    const trend = 0.55 - x * 0.2;
+    const noise = Math.sin(i * 0.8) * 0.05 + Math.sin(i * 2.1) * 0.03 + Math.sin(i * 4.3) * 0.015;
+    CHART_POINTS.push({ x, y: trend + noise });
+  }
+
+  /* Second chart line */
+  const CHART2 = [];
+  for (let i = 0; i <= CP_COUNT; i++){
+    const x = (i / CP_COUNT);
+    const trend = 0.7 - x * 0.15;
+    const noise = Math.cos(i * 1.2) * 0.04 + Math.sin(i * 3.1) * 0.025;
+    CHART2.push({ x, y: trend + noise });
+  }
+
+  /* Candlesticks */
+  const CANDLES = [];
+  for (let i = 0; i < 30; i++){
+    const x = 0.05 + (i / 30) * 0.9;
+    const base = 0.5 - i * 0.005 + Math.sin(i * 0.7) * 0.04;
+    const open = base + Math.random() * 0.03;
+    const close = base + (Math.random() - 0.4) * 0.06;
+    const high = Math.max(open, close) + Math.random() * 0.02;
+    const low = Math.min(open, close) - Math.random() * 0.02;
+    CANDLES.push({ x, open, close, high, low, green: close < open });
+  }
+
+  let scrollY = 0;
+  window.addEventListener("scroll", () => { scrollY = window.scrollY; }, { passive: true });
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    const parallax = scrollY * 0.15;
+
+    /* Grid lines */
+    ctx.strokeStyle = "rgba(212,168,87,.035)";
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    for (let x = 0; x < W; x += GRID){
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, H);
+    }
+    for (let y = -parallax % GRID; y < H; y += GRID){
+      ctx.moveTo(0, y);
+      ctx.lineTo(W, y);
+    }
+    ctx.stroke();
+
+    /* Chart line 1 */
+    ctx.strokeStyle = "rgba(212,168,87,.07)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    CHART_POINTS.forEach((p, i) => {
+      const px = p.x * W;
+      const py = p.y * H - parallax * 0.3;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    });
+    ctx.stroke();
+
+    /* Chart fill */
+    ctx.fillStyle = "rgba(212,168,87,.012)";
+    ctx.beginPath();
+    CHART_POINTS.forEach((p, i) => {
+      const px = p.x * W;
+      const py = p.y * H - parallax * 0.3;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    });
+    ctx.lineTo(W, H);
+    ctx.lineTo(0, H);
+    ctx.closePath();
+    ctx.fill();
+
+    /* Chart line 2 */
+    ctx.strokeStyle = "rgba(106,161,120,.05)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    CHART2.forEach((p, i) => {
+      const px = p.x * W;
+      const py = p.y * H - parallax * 0.2;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    });
+    ctx.stroke();
+
+    /* Candlesticks */
+    const candleW = (W * 0.9) / 30 * 0.4;
+    CANDLES.forEach(c => {
+      const cx = c.x * W;
+      const oY = c.open * H - parallax * 0.25;
+      const cY = c.close * H - parallax * 0.25;
+      const hY = c.high * H - parallax * 0.25;
+      const lY = c.low * H - parallax * 0.25;
+      const color = c.green ? "rgba(106,161,120,.06)" : "rgba(200,115,86,.06)";
+
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(cx, hY);
+      ctx.lineTo(cx, lY);
+      ctx.stroke();
+
+      ctx.fillStyle = color;
+      ctx.fillRect(cx - candleW/2, Math.min(oY, cY), candleW, Math.abs(cY - oY) || 1);
+    });
+
+    /* Floating numbers */
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    NUMS.forEach(n => {
+      n.x += n.vx;
+      n.y += n.vy;
+      n.life++;
+
+      if (n.life > n.maxLife || n.y < -50 || n.x < -100 || n.x > W + 100){
+        Object.assign(n, makeNum());
+        n.y = H + 20;
+        n.life = 0;
+      }
+
+      const fadeIn = Math.min(n.life / 60, 1);
+      const fadeOut = Math.min((n.maxLife - n.life) / 60, 1);
+      const a = n.alpha * fadeIn * fadeOut;
+
+      if (n.text.startsWith("+")) ctx.fillStyle = `rgba(106,161,120,${a})`;
+      else if (n.text.startsWith("-")) ctx.fillStyle = `rgba(200,115,86,${a})`;
+      else ctx.fillStyle = `rgba(212,168,87,${a})`;
+
+      ctx.font = `500 ${n.size}px 'IBM Plex Mono', monospace`;
+      ctx.fillText(n.text, n.x, n.y - parallax * 0.1);
+    });
+
+    /* Upward arrow (subtle, right side) */
+    const arrowX = W * 0.82;
+    const arrowTop = H * 0.2 - parallax * 0.2;
+    const arrowBot = H * 0.75 - parallax * 0.2;
+    const grad = ctx.createLinearGradient(arrowX, arrowBot, arrowX, arrowTop);
+    grad.addColorStop(0, "rgba(212,168,87,0)");
+    grad.addColorStop(0.5, "rgba(212,168,87,.04)");
+    grad.addColorStop(1, "rgba(212,168,87,.07)");
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(arrowX, arrowBot);
+    ctx.lineTo(arrowX, arrowTop);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(arrowX - 14, arrowTop + 20);
+    ctx.lineTo(arrowX, arrowTop);
+    ctx.lineTo(arrowX + 14, arrowTop + 20);
+    ctx.stroke();
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 </script>
 </body>
 </html>
