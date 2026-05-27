@@ -484,7 +484,7 @@ a{color:inherit;text-decoration:none}
       <span>Pump.fun</span>
     </div>
     <h1 class="h1 reveal d2">29 coins.<br/>One <span class="accent">index</span>.</h1>
-    <p class="lede reveal d3">Every major crypto name got its own memecoin on Pump.fun. One hub token sits on top, buys back and burns from every single one. <strong>No presale, no team tokens, fully on-chain.</strong></p>
+    <p class="lede reveal d3">Every major crypto name got its own coin on Pump.fun. One hub token sits on top, buys back and burns from every single one. <strong>No presale, no team tokens, fully on-chain.</strong></p>
     <div class="hero-actions reveal d4">
       <a class="btn btn-primary" href="#hub">Hub token <span class="arrow">→</span></a>
       <a class="btn btn-ghost" href="#index">See all 29 coins</a>
@@ -596,7 +596,7 @@ a{color:inherit;text-decoration:none}
     <div class="section-head">
       <div class="section-kicker">The index</div>
       <h2 class="section-title">All <span class="accent">29 coins</span>, live data.</h2>
-      <p class="section-sub">Each one is its own memecoin on Pump.fun, named after a top crypto. Prices pull straight from on-chain liquidity pools.</p>
+      <p class="section-sub">Each one is its own coin on Pump.fun, named after a top crypto. Prices pull straight from on-chain liquidity pools.</p>
     </div>
 
     <div class="controls">
@@ -629,7 +629,7 @@ a{color:inherit;text-decoration:none}
     <div class="foot-row">
       <div class="foot-block">
         <h6>About</h6>
-        <p class="foot-tag"><span class="accent">$CRYPTO</span> is an independent tribute index. 29 memecoins inspired by top crypto assets, not affiliated with any of them.</p>
+        <p class="foot-tag"><span class="accent">$CRYPTO</span> is an independent tribute index. 29 tribute coins inspired by top crypto assets, not affiliated with any of them.</p>
       </div>
       <div class="foot-block">
         <h6>Links</h6>
@@ -645,8 +645,8 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <div class="fine">
-      <p><strong>Heads up.</strong> These are independent memecoins on Pump.fun. They're not affiliated with Bitcoin, Ethereum, Solana or any project, team, or exchange they're named after. Just tribute names, nothing more.</p>
-      <p>None of this is financial advice. Memecoins are risky, you can lose everything. Market data comes from DexScreener and Solana RPC, might be delayed or off.</p>
+      <p><strong>Heads up.</strong> These are independent coins on Pump.fun. They're not affiliated with Bitcoin, Ethereum, Solana or any project, team, or exchange they're named after. Just tribute names, nothing more.</p>
+      <p>None of this is financial advice. Crypto is risky, you can lose everything. Market data comes from DexScreener and Solana RPC, might be delayed or off.</p>
       <p>Burn balance is the live SPL amount sitting at the Solana burn address <span class="addr">1nc1nerator11111111111111111111111111111111</span>. Check it yourself on any Solana explorer.</p>
     </div>
 
@@ -816,7 +816,7 @@ const dataMap = new Map();
 function buildFilters(){
   const counts = { ALL: COINS.length };
   CATEGORIES.forEach(c => counts[c] = COINS.filter(x => x.cat === c).length);
-  const labels = { L1:"Layer 1", MEME:"Memecoins", DEFI:"DeFi", PRIVACY:"Privacy", INFRA:"Infra" };
+  const labels = { L1:"Layer 1", MEME:"Memes", DEFI:"DeFi", PRIVACY:"Privacy", INFRA:"Infra" };
   const wrap = document.getElementById("filters");
   const pills = [{key:"ALL", label:"All"}, ...CATEGORIES.map(c => ({key:c, label:labels[c]}))];
   wrap.innerHTML = pills.map(p => `
@@ -1064,7 +1064,7 @@ function renderFooterLinks(){
    ============================================================ */
 function renderMechanics(){
   const items = [
-    {step:"01", tag:"Launch", title:"29 coins go live on Pump.fun", body:"Each one is a separate memecoin named after a top crypto. They're tributes, not the real thing, not backed by anything."},
+    {step:"01", tag:"Launch", title:"29 coins go live on Pump.fun", body:"Each one is a separate coin named after a top crypto. They're tributes, not the real thing, not backed by anything."},
     {step:"02", tag:"Fees", title:"Every trade feeds the hub", body:"50% of creator fees from all 29 coins gets routed to buy $CRYPTO and burn it. Other 50% goes to marketing and keeping things running."},
     {step:"03", tag:"Burn", title:"Tokens get burned forever", body:"Bought tokens go straight to the Solana burn address, a wallet nobody controls. You can check every single burn on-chain."}
   ];
