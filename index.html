@@ -10,31 +10,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <style>
 :root{
-  /* Surface */
-  --bg:#0a0a0c;
-  --bg-1:#0f0f12;
-  --bg-2:#15151a;
-  --surface:#16161b;
-  --surface-2:#1b1b22;
-  --surface-3:#22222a;
-  --line:#26262e;
-  --line-strong:#33333d;
+  /* Surface — deep blue */
+  --bg:#060b18;
+  --bg-1:#0a1024;
+  --bg-2:#0e1530;
+  --surface:#0d1529;
+  --surface-2:#111a33;
+  --surface-3:#162040;
+  --line:#1a2545;
+  --line-strong:#253260;
 
   /* Text */
-  --text:#f3f1ec;
-  --text-2:#bdb9af;
-  --text-3:#7f7c74;
-  --text-4:#54524c;
+  --text:#e8edf8;
+  --text-2:#9aa8c7;
+  --text-3:#5d6f94;
+  --text-4:#3a4a6b;
 
-  /* Accents */
-  --gold:#d4a857;
-  --gold-2:#e8c075;
-  --gold-3:#7c6230;
-  --accent-soft:rgba(212,168,87,.08);
-  --up:#6aa178;
-  --up-2:#8fbe9a;
-  --dn:#c87356;
-  --dn-2:#dc8d72;
+  /* Accents — cyan/blue primary */
+  --gold:#3b9eff;
+  --gold-2:#5bb4ff;
+  --gold-3:#1e5ea0;
+  --accent-soft:rgba(59,158,255,.08);
+  --up:#00e676;
+  --up-2:#69f0ae;
+  --dn:#ff4444;
+  --dn-2:#ff6b6b;
 
   /* Type */
   --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
@@ -47,7 +47,7 @@
 html,body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{overflow-x:hidden;min-height:100vh;position:relative}
 html{scroll-behavior:smooth}
-::selection{background:var(--gold);color:var(--bg)}
+::selection{background:var(--gold);color:#fff}
 a{color:inherit;text-decoration:none}
 
 /* ====== Market background ====== */
@@ -56,16 +56,17 @@ a{color:inherit;text-decoration:none}
 .market-overlay{
   position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(212,168,87,.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(106,161,120,.04) 0%, transparent 40%),
-    linear-gradient(180deg, rgba(10,10,12,.3) 0%, rgba(10,10,12,.85) 100%);
+    radial-gradient(ellipse at 50% 0%, rgba(30,80,180,.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(0,230,118,.03) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 60%, rgba(255,68,68,.03) 0%, transparent 40%),
+    linear-gradient(180deg, rgba(6,11,24,.2) 0%, rgba(6,11,24,.88) 100%);
 }
 
 /* ====== Top bar ====== */
 .topbar{
   position:sticky;top:0;z-index:50;
   border-bottom:1px solid var(--line);
-  background:rgba(10,10,12,.78);
+  background:rgba(6,11,24,.82);
   backdrop-filter:saturate(180%) blur(14px);
   -webkit-backdrop-filter:saturate(180%) blur(14px);
 }
@@ -219,8 +220,8 @@ a{color:inherit;text-decoration:none}
 .hub-image-placeholder{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   background:
-    radial-gradient(circle at 30% 30%, rgba(212,168,87,.14), transparent 60%),
-    linear-gradient(135deg, #15131c, #0a0a0c);
+    radial-gradient(circle at 30% 30%, rgba(59,158,255,.14), transparent 60%),
+    linear-gradient(135deg, #0e1530, #060b18);
 }
 .hub-image-placeholder span{
   font-family:var(--serif);font-style:italic;font-weight:400;font-size:170px;
@@ -270,8 +271,8 @@ a{color:inherit;text-decoration:none}
 .hub-cta{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 
 .hub-burn{
-  background:linear-gradient(135deg, rgba(200,115,86,.08), rgba(212,168,87,.05));
-  border:1px solid rgba(200,115,86,.2);border-radius:var(--r-md);padding:18px 22px;
+  background:linear-gradient(135deg, rgba(255,68,68,.06), rgba(59,158,255,.04));
+  border:1px solid rgba(255,68,68,.18);border-radius:var(--r-md);padding:18px 22px;
 }
 .hub-burn-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
 .hub-burn-lbl{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--dn-2)}
@@ -1072,7 +1073,7 @@ if (HUB.ca) refreshHub().then(buildTape);
 if (COINS.some(c => c.ca)) refreshPrices();
 
 /* ============================================================
-   MARKET BACKGROUND CANVAS
+   MARKET BACKGROUND CANVAS — stock LED style
    ============================================================ */
 (function(){
   const cvs = document.getElementById("marketBg");
@@ -1092,72 +1093,78 @@ if (COINS.some(c => c.ca)) refreshPrices();
   window.addEventListener("resize", resize);
   resize();
 
-  /* Grid */
-  const GRID = 80;
+  const GRID = 60;
 
-  /* Floating numbers */
+  /* Dense floating numbers + arrows */
   const NUMS = [];
-  const SYMBOLS = ["BTC","ETH","SOL","BNB","XRP","ADA","DOGE","LINK","DOT","AVAX","UNI","ATOM","NEAR","LTC","SHIB","PEPE"];
-  const PRICES = ["42,180","3,284","178.5","612","0.84","0.72","0.167","18.4","8.92","41.2","12.8","11.4","7.62","94.3","0.0000284","0.0000198"];
+  const TICKERS = ["BTC","ETH","SOL","BNB","XRP","ADA","DOGE","LINK","DOT","AVAX","UNI","ATOM","NEAR","LTC","SHIB","PEPE","WIF","BONK","FLOKI","AAVE"];
 
   function makeNum(){
-    const isPrice = Math.random() > 0.4;
-    const idx = Math.floor(Math.random() * SYMBOLS.length);
-    let text;
-    if (isPrice) {
-      text = "$" + PRICES[idx];
-    } else if (Math.random() > 0.5) {
-      text = SYMBOLS[idx];
+    const r = Math.random();
+    let text, type;
+    if (r < 0.35) {
+      const pct = (Math.random() * 8 - 2).toFixed(2);
+      const positive = parseFloat(pct) >= 0;
+      text = (positive ? "+" : "") + pct;
+      type = positive ? "up" : "dn";
+    } else if (r < 0.55) {
+      text = TICKERS[Math.floor(Math.random() * TICKERS.length)];
+      type = "ticker";
+    } else if (r < 0.75) {
+      const val = (Math.random() * 99000 + 100).toFixed(Math.random() > 0.5 ? 0 : 2);
+      text = parseFloat(val).toLocaleString("en-US");
+      type = Math.random() > 0.5 ? "up" : "dn";
+    } else if (r < 0.88) {
+      text = Math.random() > 0.5 ? "▲" : "▼";
+      type = text === "▲" ? "up" : "dn";
     } else {
-      const pct = (Math.random() * 30 - 10).toFixed(2);
-      text = (pct >= 0 ? "+" : "") + pct + "%";
+      const pct = (Math.random() * 12 - 3).toFixed(2);
+      const positive = parseFloat(pct) >= 0;
+      text = (positive ? "+" : "") + pct + "%";
+      type = positive ? "up" : "dn";
     }
     return {
       x: Math.random() * W,
       y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: -0.1 - Math.random() * 0.2,
-      alpha: 0.03 + Math.random() * 0.06,
-      size: 10 + Math.random() * 4,
-      text: text,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: -0.08 - Math.random() * 0.25,
+      alpha: 0.04 + Math.random() * 0.1,
+      size: 9 + Math.random() * 7,
+      text, type,
       life: 0,
-      maxLife: 600 + Math.random() * 800
+      maxLife: 500 + Math.random() * 900
     };
   }
-  for (let i = 0; i < 45; i++) {
+  for (let i = 0; i < 80; i++){
     const n = makeNum();
     n.life = Math.random() * n.maxLife;
     NUMS.push(n);
   }
 
-  /* Chart line (subtle rising trend) */
-  const CHART_POINTS = [];
-  const CP_COUNT = 40;
-  for (let i = 0; i <= CP_COUNT; i++){
-    const x = (i / CP_COUNT);
-    const trend = 0.55 - x * 0.2;
-    const noise = Math.sin(i * 0.8) * 0.05 + Math.sin(i * 2.1) * 0.03 + Math.sin(i * 4.3) * 0.015;
-    CHART_POINTS.push({ x, y: trend + noise });
+  /* Chart lines */
+  function makeChart(seed, baseY, slope, amp){
+    const pts = [];
+    for (let i = 0; i <= 50; i++){
+      const x = i / 50;
+      const trend = baseY - x * slope;
+      const noise = Math.sin(i * seed) * amp + Math.sin(i * seed * 2.7) * amp * 0.5;
+      pts.push({ x, y: trend + noise });
+    }
+    return pts;
   }
-
-  /* Second chart line */
-  const CHART2 = [];
-  for (let i = 0; i <= CP_COUNT; i++){
-    const x = (i / CP_COUNT);
-    const trend = 0.7 - x * 0.15;
-    const noise = Math.cos(i * 1.2) * 0.04 + Math.sin(i * 3.1) * 0.025;
-    CHART2.push({ x, y: trend + noise });
-  }
+  const CHART1 = makeChart(0.8, 0.55, 0.18, 0.04);
+  const CHART2 = makeChart(1.3, 0.68, 0.12, 0.035);
+  const CHART3 = makeChart(0.5, 0.42, 0.08, 0.03);
 
   /* Candlesticks */
   const CANDLES = [];
-  for (let i = 0; i < 30; i++){
-    const x = 0.05 + (i / 30) * 0.9;
-    const base = 0.5 - i * 0.005 + Math.sin(i * 0.7) * 0.04;
-    const open = base + Math.random() * 0.03;
-    const close = base + (Math.random() - 0.4) * 0.06;
-    const high = Math.max(open, close) + Math.random() * 0.02;
-    const low = Math.min(open, close) - Math.random() * 0.02;
+  for (let i = 0; i < 40; i++){
+    const x = 0.03 + (i / 40) * 0.94;
+    const base = 0.48 - i * 0.004 + Math.sin(i * 0.6) * 0.035;
+    const open = base + Math.random() * 0.025;
+    const close = base + (Math.random() - 0.4) * 0.055;
+    const high = Math.max(open, close) + Math.random() * 0.018;
+    const low = Math.min(open, close) - Math.random() * 0.018;
     CANDLES.push({ x, open, close, high, low, green: close < open });
   }
 
@@ -1166,76 +1173,53 @@ if (COINS.some(c => c.ca)) refreshPrices();
 
   function draw(){
     ctx.clearRect(0, 0, W, H);
-    const parallax = scrollY * 0.15;
+    const p = scrollY * 0.12;
 
-    /* Grid lines */
-    ctx.strokeStyle = "rgba(212,168,87,.035)";
+    /* Grid */
+    ctx.strokeStyle = "rgba(30,80,180,.045)";
     ctx.lineWidth = 0.5;
     ctx.beginPath();
-    for (let x = 0; x < W; x += GRID){
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, H);
+    for (let x = 0; x < W; x += GRID){ ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+    for (let y = -p % GRID; y < H; y += GRID){ ctx.moveTo(0, y); ctx.lineTo(W, y); }
+    ctx.stroke();
+
+    /* Charts */
+    function drawChart(pts, color, fillColor, width, pMul){
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      pts.forEach((pt, i) => {
+        const px = pt.x * W, py = pt.y * H - p * pMul;
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+      if (fillColor){
+        ctx.fillStyle = fillColor;
+        ctx.beginPath();
+        pts.forEach((pt, i) => {
+          const px = pt.x * W, py = pt.y * H - p * pMul;
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        });
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+      }
     }
-    for (let y = -parallax % GRID; y < H; y += GRID){
-      ctx.moveTo(0, y);
-      ctx.lineTo(W, y);
-    }
-    ctx.stroke();
-
-    /* Chart line 1 */
-    ctx.strokeStyle = "rgba(212,168,87,.07)";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    CHART_POINTS.forEach((p, i) => {
-      const px = p.x * W;
-      const py = p.y * H - parallax * 0.3;
-      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-    });
-    ctx.stroke();
-
-    /* Chart fill */
-    ctx.fillStyle = "rgba(212,168,87,.012)";
-    ctx.beginPath();
-    CHART_POINTS.forEach((p, i) => {
-      const px = p.x * W;
-      const py = p.y * H - parallax * 0.3;
-      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-    });
-    ctx.lineTo(W, H);
-    ctx.lineTo(0, H);
-    ctx.closePath();
-    ctx.fill();
-
-    /* Chart line 2 */
-    ctx.strokeStyle = "rgba(106,161,120,.05)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    CHART2.forEach((p, i) => {
-      const px = p.x * W;
-      const py = p.y * H - parallax * 0.2;
-      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-    });
-    ctx.stroke();
+    drawChart(CHART1, "rgba(0,230,118,.09)", "rgba(0,230,118,.015)", 1.5, 0.3);
+    drawChart(CHART2, "rgba(255,68,68,.07)", null, 1, 0.2);
+    drawChart(CHART3, "rgba(59,158,255,.06)", "rgba(59,158,255,.008)", 1, 0.25);
 
     /* Candlesticks */
-    const candleW = (W * 0.9) / 30 * 0.4;
+    const cw = (W * 0.94) / 40 * 0.35;
     CANDLES.forEach(c => {
       const cx = c.x * W;
-      const oY = c.open * H - parallax * 0.25;
-      const cY = c.close * H - parallax * 0.25;
-      const hY = c.high * H - parallax * 0.25;
-      const lY = c.low * H - parallax * 0.25;
-      const color = c.green ? "rgba(106,161,120,.06)" : "rgba(200,115,86,.06)";
-
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      ctx.moveTo(cx, hY);
-      ctx.lineTo(cx, lY);
-      ctx.stroke();
-
-      ctx.fillStyle = color;
-      ctx.fillRect(cx - candleW/2, Math.min(oY, cY), candleW, Math.abs(cY - oY) || 1);
+      const oY = c.open * H - p * 0.22;
+      const cY = c.close * H - p * 0.22;
+      const hY = c.high * H - p * 0.22;
+      const lY = c.low * H - p * 0.22;
+      const col = c.green ? "rgba(0,230,118,.08)" : "rgba(255,68,68,.08)";
+      ctx.strokeStyle = col; ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.moveTo(cx, hY); ctx.lineTo(cx, lY); ctx.stroke();
+      ctx.fillStyle = col;
+      ctx.fillRect(cx - cw/2, Math.min(oY, cY), cw, Math.abs(cY - oY) || 1);
     });
 
     /* Floating numbers */
@@ -1245,44 +1229,49 @@ if (COINS.some(c => c.ca)) refreshPrices();
       n.x += n.vx;
       n.y += n.vy;
       n.life++;
-
-      if (n.life > n.maxLife || n.y < -50 || n.x < -100 || n.x > W + 100){
+      if (n.life > n.maxLife || n.y < -60 || n.x < -120 || n.x > W + 120){
         Object.assign(n, makeNum());
-        n.y = H + 20;
+        n.y = H + 30;
         n.life = 0;
       }
-
-      const fadeIn = Math.min(n.life / 60, 1);
-      const fadeOut = Math.min((n.maxLife - n.life) / 60, 1);
+      const fadeIn = Math.min(n.life / 50, 1);
+      const fadeOut = Math.min((n.maxLife - n.life) / 50, 1);
       const a = n.alpha * fadeIn * fadeOut;
 
-      if (n.text.startsWith("+")) ctx.fillStyle = `rgba(106,161,120,${a})`;
-      else if (n.text.startsWith("-")) ctx.fillStyle = `rgba(200,115,86,${a})`;
-      else ctx.fillStyle = `rgba(212,168,87,${a})`;
+      if (n.type === "up") ctx.fillStyle = `rgba(0,230,118,${a})`;
+      else if (n.type === "dn") ctx.fillStyle = `rgba(255,68,68,${a})`;
+      else ctx.fillStyle = `rgba(59,158,255,${a})`;
 
-      ctx.font = `500 ${n.size}px 'IBM Plex Mono', monospace`;
-      ctx.fillText(n.text, n.x, n.y - parallax * 0.1);
+      ctx.font = `600 ${n.size}px 'IBM Plex Mono', monospace`;
+      ctx.fillText(n.text, n.x, n.y - p * 0.08);
     });
 
-    /* Upward arrow (subtle, right side) */
-    const arrowX = W * 0.82;
-    const arrowTop = H * 0.2 - parallax * 0.2;
-    const arrowBot = H * 0.75 - parallax * 0.2;
-    const grad = ctx.createLinearGradient(arrowX, arrowBot, arrowX, arrowTop);
-    grad.addColorStop(0, "rgba(212,168,87,0)");
-    grad.addColorStop(0.5, "rgba(212,168,87,.04)");
-    grad.addColorStop(1, "rgba(212,168,87,.07)");
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = 2.5;
-    ctx.beginPath();
-    ctx.moveTo(arrowX, arrowBot);
-    ctx.lineTo(arrowX, arrowTop);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(arrowX - 14, arrowTop + 20);
-    ctx.lineTo(arrowX, arrowTop);
-    ctx.lineTo(arrowX + 14, arrowTop + 20);
-    ctx.stroke();
+    /* Big arrows */
+    function drawArrow(x, up, baseAlpha){
+      const top = H * 0.15 - p * 0.18;
+      const bot = H * 0.8 - p * 0.18;
+      const col = up ? [0,230,118] : [255,68,68];
+      const grad = ctx.createLinearGradient(x, bot, x, top);
+      grad.addColorStop(0, `rgba(${col},0)`);
+      grad.addColorStop(0.5, `rgba(${col},${baseAlpha * 0.6})`);
+      grad.addColorStop(1, `rgba(${col},${baseAlpha})`);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      if (up){ ctx.moveTo(x, bot); ctx.lineTo(x, top); }
+      else { ctx.moveTo(x, top); ctx.lineTo(x, bot); }
+      ctx.stroke();
+      const tip = up ? top : bot;
+      const dir = up ? 1 : -1;
+      ctx.beginPath();
+      ctx.moveTo(x - 16, tip + 22 * dir);
+      ctx.lineTo(x, tip);
+      ctx.lineTo(x + 16, tip + 22 * dir);
+      ctx.stroke();
+    }
+    drawArrow(W * 0.15, true, 0.06);
+    drawArrow(W * 0.85, true, 0.08);
+    drawArrow(W * 0.5, false, 0.04);
 
     requestAnimationFrame(draw);
   }
