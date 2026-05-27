@@ -7,7 +7,7 @@
 <meta name="description" content="Thirty names. Thirty coins. One hub on Solana." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
 :root{
   /* Surface — deep blue */
@@ -79,9 +79,9 @@ a{color:inherit;text-decoration:none}
   font-family:var(--sans);font-weight:600;font-size:15px;letter-spacing:-.015em;color:var(--text);
 }
 .brand-mark{
-  width:24px;height:24px;border-radius:6px;background:var(--gold);color:var(--bg);
+  width:24px;height:24px;border-radius:6px;background:var(--gold);color:#fff;
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-style:italic;font-size:16px;font-weight:500;
+  font-family:var(--mono);font-style:normal;font-size:14px;font-weight:600;
 }
 .nav{display:flex;gap:2px}
 .nav a{
@@ -113,8 +113,8 @@ a{color:inherit;text-decoration:none}
   line-height:.98;letter-spacing:-.045em;color:var(--text);margin-bottom:24px;
 }
 .h1 .accent{
-  font-family:var(--serif);font-style:italic;font-weight:400;color:var(--gold);
-  letter-spacing:-.025em;
+  font-family:var(--sans);font-style:normal;font-weight:800;color:var(--gold);
+  letter-spacing:-.04em;
 }
 
 .lede{
@@ -186,7 +186,7 @@ a{color:inherit;text-decoration:none}
   font-family:var(--sans);font-weight:600;font-size:clamp(28px,4.5vw,44px);
   line-height:1.05;letter-spacing:-.035em;color:var(--text);max-width:640px;
 }
-.section-title .accent{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--gold)}
+.section-title .accent{font-family:var(--sans);font-style:normal;font-weight:800;color:var(--gold)}
 .section-sub{font-family:var(--sans);font-size:15px;color:var(--text-3);margin-top:10px;max-width:600px;line-height:1.55}
 
 /* ====== Hub Token ====== */
@@ -224,8 +224,8 @@ a{color:inherit;text-decoration:none}
     linear-gradient(135deg, #0e1530, #060b18);
 }
 .hub-image-placeholder span{
-  font-family:var(--serif);font-style:italic;font-weight:400;font-size:170px;
-  letter-spacing:-.05em;line-height:1;color:var(--gold);
+  font-family:var(--mono);font-style:normal;font-weight:600;font-size:140px;
+  letter-spacing:-.02em;line-height:1;color:var(--gold);
 }
 .hub-image-cap{font-family:var(--mono);font-size:10.5px;color:var(--text-3);letter-spacing:.04em}
 
@@ -235,7 +235,7 @@ a{color:inherit;text-decoration:none}
   font-family:var(--sans);font-weight:600;font-size:clamp(40px,6vw,64px);
   line-height:1;letter-spacing:-.04em;color:var(--text);
 }
-.hub-ticker .dollar{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--gold)}
+.hub-ticker .dollar{font-family:var(--sans);font-style:normal;font-weight:800;color:var(--gold)}
 .hub-chip{
   font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;font-weight:500;text-transform:uppercase;
   padding:5px 10px;background:var(--bg-1);border:1px solid var(--line);border-radius:6px;color:var(--text-3);
@@ -267,7 +267,7 @@ a{color:inherit;text-decoration:none}
 .hub-contract-lbl{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;color:var(--text-3);text-transform:uppercase;margin-bottom:8px}
 .hub-ca{font-family:var(--mono);font-size:13px;color:var(--text);word-break:break-all;cursor:pointer;display:inline-block;transition:opacity .15s}
 .hub-ca:hover{opacity:.7}
-.hub-ca.empty{color:var(--text-4);font-style:italic;cursor:default;font-family:var(--serif)}
+.hub-ca.empty{color:var(--text-4);font-style:normal;cursor:default;font-family:var(--mono)}
 .hub-cta{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 
 .hub-burn{
@@ -351,7 +351,7 @@ a{color:inherit;text-decoration:none}
   font-family:var(--sans);font-weight:600;font-size:15px;letter-spacing:-.01em;color:var(--text);
   position:relative;
 }
-.mark.glyph{font-family:var(--serif);font-style:italic;font-weight:400;font-size:26px;color:var(--gold)}
+.mark.glyph{font-family:var(--sans);font-style:normal;font-weight:700;font-size:22px;color:var(--gold)}
 .card-id{flex:1;min-width:0;padding-top:2px}
 .card-sym{
   font-family:var(--sans);font-weight:600;font-size:17px;letter-spacing:-.018em;color:var(--text);
@@ -384,7 +384,7 @@ a{color:inherit;text-decoration:none}
   display:inline-flex;align-items:center;gap:7px;flex:1;min-width:0;transition:color .15s;
 }
 .ca:hover{color:var(--text)}
-.ca.empty{cursor:default;font-style:italic;font-family:var(--serif);font-size:13px;color:var(--text-4)}
+.ca.empty{cursor:default;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--text-4)}
 .ca-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ca-copy{flex-shrink:0;opacity:.5;font-size:11px}
 
@@ -404,7 +404,7 @@ a{color:inherit;text-decoration:none}
 }
 .copy-flash.show{opacity:1}
 
-.empty-state{padding:60px 20px;text-align:center;color:var(--text-4);font-family:var(--serif);font-style:italic;font-size:18px}
+.empty-state{padding:60px 20px;text-align:center;color:var(--text-4);font-family:var(--sans);font-style:normal;font-size:16px;font-weight:500}
 
 /* ====== Mechanics ====== */
 .mech{display:grid;grid-template-columns:1fr;gap:16px}
@@ -414,8 +414,8 @@ a{color:inherit;text-decoration:none}
   padding:26px 24px;position:relative;overflow:hidden;
 }
 .mech-num{
-  font-family:var(--serif);font-style:italic;font-weight:400;font-size:48px;
-  letter-spacing:-.04em;color:var(--gold);line-height:1;margin-bottom:18px;
+  font-family:var(--mono);font-style:normal;font-weight:600;font-size:42px;
+  letter-spacing:-.02em;color:var(--gold);line-height:1;margin-bottom:18px;
 }
 .mech-num em{font-family:var(--mono);font-style:normal;font-size:11.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--text-3);margin-left:10px;vertical-align:6px}
 .mech-title{font-family:var(--sans);font-weight:600;font-size:19px;line-height:1.3;letter-spacing:-.02em;color:var(--text);margin-bottom:10px}
@@ -427,7 +427,7 @@ a{color:inherit;text-decoration:none}
 @media (min-width:760px){.foot-row{grid-template-columns:2fr 1fr 1fr}}
 .foot-block h6{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;color:var(--text-3);text-transform:uppercase;margin-bottom:14px}
 .foot-tag{font-family:var(--sans);font-size:17px;color:var(--text-2);line-height:1.55;max-width:440px;letter-spacing:-.012em}
-.foot-tag .accent{font-family:var(--serif);font-style:italic;color:var(--gold)}
+.foot-tag .accent{font-family:var(--sans);font-style:normal;font-weight:700;color:var(--gold)}
 .foot-block a{
   display:block;font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--text-2);
   padding:8px 0;border-bottom:1px solid var(--line);transition:color .15s;
